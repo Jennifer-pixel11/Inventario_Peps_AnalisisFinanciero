@@ -6,6 +6,10 @@
   --bg:#f6f7fb;
 }
 
+
+
+
+
 body { background: var(--bg); }
 .card { border-radius: 1rem; border: 0; }
 .table thead th { white-space: nowrap; }
