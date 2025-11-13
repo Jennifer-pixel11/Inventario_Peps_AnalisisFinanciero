@@ -28,6 +28,7 @@
   </div>
   <div class="mt-3 d-flex gap-2">
     <button class="btn btn-primary">Guardar salida</button>
-    <a class="btn btn-light" href="index.php?controller=productos&action=index">Volver</a>
+   <a href="index.php" class="btn-volver">Volver</a>
+
   </div>
 </form>

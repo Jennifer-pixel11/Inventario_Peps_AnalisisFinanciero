@@ -1,89 +1,276 @@
-:root{
-  --brand-1:#101827; /* azul neón oscuro / negro azulado */
-  --brand-2:#1f2937; /* gris azulado */
-  --brand-acc:#10b981; /* verde esmeralda */
-  --brand-acc-2:#22d3ee; /* cian */
-  --bg:#f6f7fb;
+
+/* Fondo global */
+body, html {
+  background-color: #000000 !important;
+  color: #d4ffd9 !important;
+  font-family: "Segoe UI", sans-serif;
+}
+
+
+.brand-gradient {
+  background: linear-gradient(90deg, #000000 0%, #001a0c 35%, #00ff7f33 100%) !important;
+  border-bottom: 1px solid #00ff7f55 !important;
+  box-shadow: 0 4px 20px #000000 !important;
+}
+
+/* ========= FIX: texto siempre visible en modo oscuro ========== */
+
+body, html, 
+.card, .card * ,
+.table,  * ,
+.form-control, .form-control *,
+.navbar, .navbar *,
+.dropdown-menu, .dropdown-item,
+label, p, span, h1, h2, h3, h4, h5, h6 {
+    color: #d4ffd9 !important;
+}
+
+
+.nav-link {
+    color: #e0ffe8 !important;
+}
+.nav-link:hover {
+    color: #00ff7f !important;
+}
+
+
+/* Contenedor principal */
+.container {
+  background-color: transparent !important;
+  color: #d4ffd9 !important;
+}
+
+/* Cards */
+.card {
+  background-color: #050807 !important;
+  border-radius: 12px !important;
+  border: 1px solid #00ff7f55 !important;
+  box-shadow: 0 0 16px #00ff7f22 !important;
+  color: #d4ffd9 !important;
+}
+
+.card-header {
+  background-color: #000000 !important;
+  border-bottom: 1px solid #00ff7f55 !important;
+  color: #00ff7f !important;
+  font-weight: 600;
 }
 
 
 
-
-
-body { background: var(--bg); }
-.card { border-radius: 1rem; border: 0; }
-.table thead th { white-space: nowrap; }
-.table-hover tbody tr:hover { background: #f3f6ff; }
-
-.brand-gradient{
-  background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
-}
-.brand-dot{
-  display:inline-block; width:10px; height:10px; border-radius:50%;
-  background: linear-gradient(45deg, var(--brand-acc), var(--brand-acc-2));
-  box-shadow: 0 0 0 3px rgba(255,255,255,.2);
+.table {
+    background-color: #000 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 6px !important; /* separación entre filas tipo cards */
 }
 
-.navbar .nav-link{ color: #e5e7eb !important; }
-.navbar .nav-link:hover{ color: white !important; }
-.navbar .dropdown-menu{ border-radius: .75rem; overflow: hidden; }
-
-.btn-primary{
-  background: var(--brand-acc);
-  border-color: var(--brand-acc);
-}
-.btn-primary:hover{
-  background:#0ea271;border-color:#0ea271;
-}
-.btn-success{
-  background:#16a34a;border-color:#16a34a;
-}
-.btn-success:hover{
-  background:#15803d;border-color:#15803d;
+.table thead tr {
+    background: linear-gradient(90deg, #001707, #003816) !important;
 }
 
-.stylish-card{
-  border: 1px solid rgba(16,24,39,.06);
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(16,24,39,.06);
+.table thead th {
+    color: #00ff7f !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #00ff7f !important;
+    padding: 12px 10px !important;
 }
 
-.hover-card{
-  transition: transform .12s ease, box-shadow .12s ease;
-  border: 1px solid rgba(16,24,39,.06);
-}
-.hover-card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(16,24,39,.12);
+/* Filas del cuerpo estilo tarjeta */
+.table thead th {
+    text-shadow: 0 0 6px #00ff7f99;
 }
 
-img{
-  max-width:100%;
+.table tbody tr {
+    background: #010a06 !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+    border-left: 3px solid #004f28;
 }
 
-/* Tabla compacta pero legible */
-.table td, .table th { vertical-align: middle; }
+/* Ajuste para que el spacing funcione */
+.table tbody tr td {
+    padding: 12px 10px !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+/* HOVER de fila */
+.table tbody tr:hover {
+    background: #b4ffcc !important; 
+    transform: scale(1.01);
+    box-shadow: 0 0 12px #00ff7f44;
+    border-left: 3px solid #00ff7f !important;
+}
+
+.table tbody tr:hover td {
+    color: #000 !important; 
+}
+
+/* bordes suaves */
+.table tbody tr td:first-child {
+    border-radius: 10px 0 0 10px;
+}
+.table tbody tr td:last-child {
+    border-radius: 0 10px 10px 0;
+}
 
 
+/* Inputs y selects */
+.form-control,
+.form-select {
+  background-color: #00190e !important;
+  color: #caffc9 !important;
+  border: 1px solid #00ff7f66 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #002e19 !important;
+  border-color: #00ff7f !important;
+  box-shadow: 0 0 12px #00ff7f88 !important;
+}
+
+::placeholder {
+  color: #59ff9a !important;
+}
+
+/* Botones */
+.btn-success {
+  background: #00ff7f !important;
+  border: none !important;
+  color: #000 !important;
+  font-weight: bold;
+  box-shadow: 0 0 15px #00ff7f !important;
+}
+
+.btn-success:hover {
+  background: #00ea74 !important;
+}
+
+.btn-primary {
+  background: #00664e !important;
+  border-color: #00ff7f !important;
+}
+
+.btn-dark {
+  background: #000000 !important;
+  border: 1px solid #00ff7f66 !important;
+  color: #00ff7f !important;
+}
+
+/* Badges */
+.badge.bg-success {
+  background-color: #00ff7f !important;
+  color: #000 !important;
+}
+
+.badge.bg-warning {
+  background-color: #dbff45 !important;
+  color: #003300 !important;
+}
+
+.badge.bg-danger {
+  background-color: #ff1744 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: #00ff7f55;
+  border-radius: 10px;
+}
+
+
+.table tbody td,
+.table thead th {
+    color: #000000 !important;   
+}
+
+
+.table .btn,
+.table .btn * {
+    color: inherit !important; 
+}
+
+
+.footer-gym {
+  background: linear-gradient(135deg, #1e1f21 0%, #000000 100%);
+  box-shadow: 0 -3px 15px rgba(0,0,0,0.8);
+  border-top: 1px solid #00ff7f55;
+}
+
+/* texto del footer */
+.footer-gym .container {
+  color: #00ff7f;
+  text-shadow:
+    0 0 6px #00ff7f66,
+    0 0 12px #00ff7f33;
+}
+
+
+.footer-gym .container div:nth-child(2) {
+  color: #b5ffd0;
+}
+
+
+.footer-gym .opacity-75 {
+  opacity: 0.8 !important;
+  color: #7dffae;
+}
 html, body {
   height: 100%;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
+footer {
+  margin-top: auto;
 }
 
-/* Contenido principal (área entre nav y footer) */
-.container {
-  flex: 1 0 auto;
+/* ========================================
+   BOTÓN VOLVER - ESTILO GYM NEON VISIBLE
+======================================== */
+
+.btn-volver {
+    background: #003a22 !important;            /* verde oscuro */
+    color: #00ff7f !important;                 /* texto neon */
+    border: 1px solid #00ff7f !important;
+    padding: 8px 18px !important;
+    font-weight: bold;
+    border-radius: 8px;
+    text-shadow: 0 0 8px #00ff7f;
+    box-shadow: 0 0 10px #00ff7f55;
+    transition: all 0.2s ease-in-out;
 }
 
-/* Footer fijo abajo */
-.site-footer {
-  flex-shrink: 0;
-  background: #ffffff;
-  border-top: 1px solid rgba(16,24,39,.08);
-  box-shadow: 0 -2px 12px rgba(16,24,39,.05);
+.btn-volver:hover {
+    background: #00ff7f !important;
+    color: #000 !important;
+    box-shadow: 0 0 15px #00ff7f;
+    transform: scale(1.05);
+}
+/* ===============================
+   DROPDOWN MENÚ REPORTES visible
+=============================== */
+
+.navbar .dropdown-menu {
+    background-color: #050806 !important;     /* fondo oscuro */
+    border: 1px solid #00ff7f55 !important;   /* borde neon suave */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+    padding: 4px 0;
+}
+
+/* ítems dentro del dropdown */
+.navbar .dropdown-item {
+    color: #d4ffd9 !important;         /* texto claro */
+    font-size: 0.9rem;
+}
+
+/* hover de cada opción del menú */
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+    background-color: #00351a !important;  /* verde oscuro */
+    color: #00ff7f !important;             /* texto neon */
 }

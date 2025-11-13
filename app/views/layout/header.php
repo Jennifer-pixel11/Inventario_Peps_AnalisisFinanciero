@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inventario PEPS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<?php echo $base; ?>/public/css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="public/css/styles.css?v=3">
+
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark brand-gradient border-0 mb-4 shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
-      <span class="brand-dot"></span> Inventario PEPS 
+      <span class="brand-dot"></span>GYM SPORT CENTER (Inventario PEPS) 
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

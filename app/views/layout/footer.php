@@ -1,12 +1,13 @@
 </div> <!-- /container -->
 
-<footer class="site-footer text-center py-3 mt-auto">
-  <div class="container small text-muted">
+<footer class="site-footer footer-gym text-center py-3 mt-auto w-100">
+  <div class="container small">
     <div class="fw-semibold">Inventario PEPS · Control de Existencias de Productos</div>
     <div>© <?php echo date('Y'); ?> — Actualizado: <span id="live-time"></span></div>
     <div class="opacity-75">CICLO II -2025 ANALISIS FINANCIERO TEORICO 1</div>
   </div>
 </footer>
+
 
 <script>
 function updateClock(){
