@@ -229,9 +229,7 @@ footer {
   margin-top: auto;
 }
 
-/* ========================================
-   BOTÓN VOLVER - ESTILO GYM NEON VISIBLE
-======================================== */
+
 
 .btn-volver {
     background: #003a22 !important;            /* verde oscuro */
@@ -251,9 +249,7 @@ footer {
     box-shadow: 0 0 15px #00ff7f;
     transform: scale(1.05);
 }
-/* ===============================
-   DROPDOWN MENÚ REPORTES visible
-=============================== */
+
 
 .navbar .dropdown-menu {
     background-color: #050806 !important;     /* fondo oscuro */

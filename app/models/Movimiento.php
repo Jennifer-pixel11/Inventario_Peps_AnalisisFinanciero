@@ -5,11 +5,7 @@ require_once __DIR__ . '/Lote.php';
 
 class Movimiento {
 
-  /* ==========================
-   *  REGISTRO DE MOVIMIENTOS
-   * ========================== */
 
-  // ENTRADA: crea lote y movimiento
   public static function registrarEntrada($producto_id, $fecha, $cantidad, $costo_unitario, $nota='') {
     $pdo = Database::getInstance();
     $pdo->beginTransaction();
