@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2025 a las 05:30:12
+-- Tiempo de generación: 14-11-2025 a las 06:12:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -44,7 +44,8 @@ INSERT INTO `lotes` (`id`, `producto_id`, `fecha`, `costo_unitario`, `cantidad_i
 (1, 1, '2025-10-29', 80.0000, 20.00, 20.00),
 (2, 2, '2025-10-29', 65.0000, 5.00, 0.00),
 (3, 3, '2025-10-30', 90.0000, 15.00, 8.00),
-(4, 2, '2025-10-29', 50.0000, 10.00, 10.00);
+(4, 2, '2025-10-29', 50.0000, 10.00, 10.00),
+(5, 4, '2025-10-29', 45.0000, 10.00, 10.00);
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,8 @@ INSERT INTO `movimientos` (`id`, `producto_id`, `tipo`, `fecha`, `cantidad`, `co
 (3, 2, 'SALIDA', '2025-10-29 00:00:00', 5.00, 65.0000, 325.0000, 2, ''),
 (4, 3, 'ENTRADA', '2025-10-30 00:00:00', 15.00, 90.0000, 1350.0000, 3, ''),
 (5, 3, 'SALIDA', '2025-10-30 00:00:00', 7.00, 90.0000, 630.0000, 3, ''),
-(6, 2, 'ENTRADA', '2025-10-29 00:00:00', 10.00, 50.0000, 500.0000, 4, '');
+(6, 2, 'ENTRADA', '2025-10-29 00:00:00', 10.00, 50.0000, 500.0000, 4, ''),
+(7, 4, 'ENTRADA', '2025-10-29 00:00:00', 10.00, 45.0000, 450.0000, 5, '');
 
 -- --------------------------------------------------------
 
@@ -89,18 +91,18 @@ CREATE TABLE `productos` (
   `unidad` varchar(20) DEFAULT 'unidad',
   `stock` decimal(12,2) NOT NULL DEFAULT 0.00,
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
-  `imagen` varchar(255) DEFAULT NULL,
-  `id_proveedor` int(11) DEFAULT NULL
+  `imagen` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `stock`, `creado_en`, `imagen`, `id_proveedor`) VALUES
-(1, '0001', 'Whey protein Animal', '20', 20.00, '2025-10-30 00:32:33', '/inventario_peps_web/public/uploads/img_6902b221b2acb4.84692897.jpg', NULL),
-(2, '0002', 'dymatize chocolate gourmet 1 6 libras', '10', 10.00, '2025-10-30 00:35:59', '/inventario_peps_web/public/uploads/img_6902b2ef1160a5.17570513.jpg', NULL),
-(3, '0003', 'Isopure Whey Isolate Protein Powder', '15', 8.00, '2025-10-30 01:28:25', '/inventario_peps_web/public/uploads/img_6902bf397c9792.37845204.jpg', NULL);
+INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `stock`, `creado_en`, `imagen`) VALUES
+(1, '0001', 'Whey protein Animal', 'lb', 20.00, '2025-10-30 00:32:33', '/inventario_peps_web/public/uploads/img_6902b221b2acb4.84692897.jpg'),
+(2, '0002', 'dymatize chocolate gourmet 1 6 libras', 'lb', 10.00, '2025-10-30 00:35:59', '/inventario_peps_web/public/uploads/img_6902b2ef1160a5.17570513.jpg'),
+(3, '0003', 'Isopure Whey Isolate Protein Powder', 'lb', 8.00, '2025-10-30 01:28:25', '/inventario_peps_web/public/uploads/img_6902bf397c9792.37845204.jpg'),
+(4, '0004', 'Creatina', 'lb', 10.00, '2025-10-30 03:30:53', '/inventario_peps_web/public/uploads/img_6902dbed56b076.43210882.jpg');
 
 -- --------------------------------------------------------
 
@@ -109,21 +111,14 @@ INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `stock`, `creado_en
 --
 
 CREATE TABLE `proveedor` (
-  `id` int(11) NOT NULL,
-  `nombre_empresa` varchar(100) NOT NULL,
-  `contacto_nombre` varchar(100) DEFAULT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `direccion` text DEFAULT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `nombre_empresa` varchar(150) NOT NULL,
+  `contacto_nombre` varchar(150) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `proveedor`
---
-
-INSERT INTO `proveedor` (`id`, `nombre_empresa`, `contacto_nombre`, `telefono`, `email`, `direccion`) VALUES
-(1, 'Inversiones Tecnológicas S.A.', 'Ana Hernández', '2510-1234', 'a.hernandez@intech.com.sv', 'Santa Elena, Antiguo Cuscatlán, La Libertad'),
-(2, 'Distribuidora de Papelería (DIPASA)', 'Carlos Menjívar', '2444-5678', 'c.menjivar@dipasa.com', 'Centro de San Miguel, San Miguel');
 
 --
 -- Índices para tablas volcadas
@@ -150,8 +145,7 @@ ALTER TABLE `movimientos`
 --
 ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `codigo` (`codigo`),
-  ADD KEY `id_proveedor` (`id_proveedor`);
+  ADD UNIQUE KEY `codigo` (`codigo`);
 
 --
 -- Indices de la tabla `proveedor`
@@ -167,25 +161,25 @@ ALTER TABLE `proveedor`
 -- AUTO_INCREMENT de la tabla `lotes`
 --
 ALTER TABLE `lotes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -203,12 +197,6 @@ ALTER TABLE `lotes`
 ALTER TABLE `movimientos`
   ADD CONSTRAINT `movimientos_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `movimientos_ibfk_2` FOREIGN KEY (`lote_id`) REFERENCES `lotes` (`id`) ON DELETE SET NULL;
-
---
--- Filtros para la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD CONSTRAINT `fk_producto_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
