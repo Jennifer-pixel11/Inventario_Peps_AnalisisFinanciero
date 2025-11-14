@@ -24,6 +24,7 @@
         <li class="nav-item"><a class="nav-link" href="index.php?controller=productos&action=index">Productos</a></li>
         <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=entrada">Entradas</a></li>
         <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=salida">Salidas</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.php?controller=proveedores&action=index">Proveedores</a></li>
         <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=kardex">Kardex</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Reportes</a>
