@@ -25,6 +25,6 @@
   </div>
   <div class="mt-3 d-flex gap-2">
     <button class="btn btn-primary">Actualizar</button>
-    <a class="btn btn-light" href="index.php?controller=productos&action=index">Cancelar</a>
+      <a href="index.php" class="btn-volver">Cancelar</a>
   </div>
 </form>

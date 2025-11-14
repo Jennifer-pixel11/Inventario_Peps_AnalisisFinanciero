@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2025 a las 06:12:07
+-- Tiempo de generación: 14-11-2025 a las 08:05:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -89,6 +89,7 @@ CREATE TABLE `productos` (
   `codigo` varchar(50) DEFAULT NULL,
   `nombre` varchar(120) NOT NULL,
   `unidad` varchar(20) DEFAULT 'unidad',
+  `proveedor_id` int(10) UNSIGNED DEFAULT NULL,
   `stock` decimal(12,2) NOT NULL DEFAULT 0.00,
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
   `imagen` varchar(255) DEFAULT NULL
@@ -98,11 +99,11 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `stock`, `creado_en`, `imagen`) VALUES
-(1, '0001', 'Whey protein Animal', 'lb', 20.00, '2025-10-30 00:32:33', '/inventario_peps_web/public/uploads/img_6902b221b2acb4.84692897.jpg'),
-(2, '0002', 'dymatize chocolate gourmet 1 6 libras', 'lb', 10.00, '2025-10-30 00:35:59', '/inventario_peps_web/public/uploads/img_6902b2ef1160a5.17570513.jpg'),
-(3, '0003', 'Isopure Whey Isolate Protein Powder', 'lb', 8.00, '2025-10-30 01:28:25', '/inventario_peps_web/public/uploads/img_6902bf397c9792.37845204.jpg'),
-(4, '0004', 'Creatina', 'lb', 10.00, '2025-10-30 03:30:53', '/inventario_peps_web/public/uploads/img_6902dbed56b076.43210882.jpg');
+INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `proveedor_id`, `stock`, `creado_en`, `imagen`) VALUES
+(1, '0001', 'Whey protein Animal', 'lb', NULL, 20.00, '2025-10-30 00:32:33', '/inventario_peps_web/public/uploads/img_6902b221b2acb4.84692897.jpg'),
+(2, '0002', 'dymatize chocolate gourmet 1 6 libras', 'lb', NULL, 10.00, '2025-10-30 00:35:59', '/inventario_peps_web/public/uploads/img_6902b2ef1160a5.17570513.jpg'),
+(3, '0003', 'Isopure Whey Isolate Protein Powder', 'lb', NULL, 8.00, '2025-10-30 01:28:25', '/inventario_peps_web/public/uploads/img_6902bf397c9792.37845204.jpg'),
+(4, '0004', 'Creatina', 'lb', NULL, 10.00, '2025-10-30 03:30:53', '/inventario_peps_web/public/uploads/img_6902dbed56b076.43210882.jpg');
 
 -- --------------------------------------------------------
 
@@ -145,7 +146,8 @@ ALTER TABLE `movimientos`
 --
 ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `codigo` (`codigo`);
+  ADD UNIQUE KEY `codigo` (`codigo`),
+  ADD KEY `fk_productos_proveedor` (`proveedor_id`);
 
 --
 -- Indices de la tabla `proveedor`
@@ -173,13 +175,13 @@ ALTER TABLE `movimientos`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -197,6 +199,12 @@ ALTER TABLE `lotes`
 ALTER TABLE `movimientos`
   ADD CONSTRAINT `movimientos_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `movimientos_ibfk_2` FOREIGN KEY (`lote_id`) REFERENCES `lotes` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `fk_productos_proveedor` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
