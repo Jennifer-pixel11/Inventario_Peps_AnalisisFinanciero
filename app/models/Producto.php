@@ -78,11 +78,7 @@ class Producto
     // STOCK (USADO POR PEPS)
     // ============================
 
-    /**
-     * Recalcula el stock del producto a partir de la tabla lotes (PEPS).
-     * Se suma cantidad_disponible de todos los lotes del producto
-     * y se actualiza la columna stock en la tabla productos.
-     */
+
     public static function actualizarStock($id_producto) {
         $pdo = Database::getInstance();
 
@@ -110,17 +106,11 @@ class Producto
     // PRODUCTOS EN BAJO STOCK
     // ============================
 
-    /**
-     * Devuelve los productos con stock por debajo o igual a un umbral.
-     * Por defecto, umbral = 5 unidades.
-     * Se usa para el panel (alertas de bajo stock).
-     */
+  
     public static function lowStock($umbral = 5) {
         $pdo = Database::getInstance();
 
-        // Si en tu BD tienes una columna 'stock_minimo', podrías usar:
-        // SELECT * FROM productos WHERE stock <= stock_minimo
-        // Aquí dejo una versión simple con umbral fijo.
+      
         $stmt = $pdo->prepare("
             SELECT p.*, pr.nombre_empresa AS proveedor_nombre
             FROM " . self::$tabla . " p

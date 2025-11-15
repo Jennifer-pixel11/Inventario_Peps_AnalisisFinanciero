@@ -44,10 +44,7 @@ class Proveedor {
             $stmt = $pdo->prepare("DELETE FROM proveedor WHERE id=?");
             $stmt->execute([$id]);
         } catch (PDOException $e) {
-            // Si intentas borrar un proveedor que tiene productos, MySQL dará error.
-            // Aquí atrapamos ese error para que no "explote" la página.
-            // Puedes redirigir o mostrar mensaje si prefieres.
-            // Error code 23000 suele ser integridad referencial (Foreign Key)
+
             if ($e->getCode() == '23000') {
                 echo "<script>alert('No se puede eliminar: Este proveedor tiene productos asignados.'); window.location.href='index.php?controller=proveedores&action=index';</script>";
                 exit;
