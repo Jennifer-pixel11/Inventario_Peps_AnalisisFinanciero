@@ -7,7 +7,7 @@
   <title>Inventario PEPS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="public/css/styles.css?v=3">
-
+<link rel="icon" type="image/png" href="public/img/favicon.png">
 
 </head>
 <body>
