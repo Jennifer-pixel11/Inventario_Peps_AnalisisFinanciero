@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2025 a las 02:47:41
+-- Tiempo de generación: 15-11-2025 a las 07:54:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,10 +41,8 @@ CREATE TABLE `lotes` (
 --
 
 INSERT INTO `lotes` (`id`, `producto_id`, `fecha`, `costo_unitario`, `cantidad_inicial`, `cantidad_disponible`) VALUES
-(9, 12, '2025-11-14', 40.0000, 10.00, 9.00),
-(10, 13, '2025-11-14', 45.0000, 15.00, 15.00),
-(11, 14, '2025-11-14', 45.0000, 10.00, 10.00),
-(12, 15, '2025-11-14', 60.0000, 10.00, 10.00);
+(21, 29, '2025-11-15', 45.0000, 5.00, 0.00),
+(22, 29, '2025-11-15', 45.0000, 10.00, 8.00);
 
 -- --------------------------------------------------------
 
@@ -76,11 +74,11 @@ CREATE TABLE `movimientos` (
 --
 
 INSERT INTO `movimientos` (`id`, `producto_id`, `proveedor_id`, `num_doc_compra`, `tipo`, `fecha`, `cantidad`, `costo_unitario`, `precio_venta`, `total_venta`, `total`, `lote_id`, `nota`, `cliente_nombre`, `cliente_nit`, `num_doc_venta`) VALUES
-(18, 12, 6, 'FC-0001', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 40.0000, NULL, NULL, 400.0000, 9, 'Compra de Proteína Whey', NULL, NULL, NULL),
-(19, 13, 5, 'FC-0002', 'ENTRADA', '2025-11-14 00:00:00', 15.00, 45.0000, NULL, NULL, 675.0000, 10, 'Compra de Pre Entreno Lab Nutrition', NULL, NULL, NULL),
-(20, 14, 4, 'FC-0003', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 45.0000, NULL, NULL, 450.0000, 11, 'Compra de aminoácidos Nutrex ', NULL, NULL, NULL),
-(21, 15, 7, 'FC-0004', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 60.0000, NULL, NULL, 600.0000, 12, 'Compra de Creatina Muscle Tech', NULL, NULL, NULL),
-(22, 12, NULL, NULL, 'SALIDA', '2025-11-14 00:00:00', 1.00, 40.0000, 80.0000, 80.0000, 40.0000, 9, 'Venta de Proteína Whey', 'Emely Alvarez', '1234-000001-123-4', 'FV-001');
+(33, 29, 7, 'FC-0001', 'ENTRADA', '2025-11-15 00:00:00', 5.00, 45.0000, NULL, NULL, 225.0000, 21, 'PreEntreno', NULL, NULL, NULL),
+(34, 29, 7, 'FC-0001', 'ENTRADA', '2025-11-15 00:00:00', 10.00, 45.0000, NULL, NULL, 450.0000, 22, 'pre', NULL, NULL, NULL),
+(35, 29, NULL, NULL, 'SALIDA', '2025-11-15 00:00:00', 2.00, 45.0000, 55.0000, 110.0000, 90.0000, 21, 'Venta Pre Entreno', 'Emely Alvarez', '1234-000001-123-4', 'FV-001'),
+(36, 29, NULL, NULL, 'SALIDA', '2025-11-15 00:00:00', 3.00, 45.0000, 55.0000, 275.0000, 135.0000, 21, 'Venta de Pre Entreno', 'Dolores D. Parto', '0115-000002-123-1', 'FV-002'),
+(37, 29, NULL, NULL, 'SALIDA', '2025-11-15 00:00:00', 2.00, 45.0000, 55.0000, 275.0000, 90.0000, 22, 'Venta de Pre Entreno', 'Dolores D. Parto', '0115-000002-123-1', 'FV-002');
 
 -- --------------------------------------------------------
 
@@ -104,11 +102,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `proveedor_id`, `stock`, `creado_en`, `imagen`) VALUES
-(12, '0001', 'Whey protein Animal', 'lb', 6, 9.00, '2025-11-14 22:46:14', 'public/img/productos/1763160374_100-whey-protein-Animal.jpg'),
-(13, '0002', 'Pre Entreno Lab Nutrition', 'lb', 5, 15.00, '2025-11-14 22:46:42', 'public/img/productos/1763160402_Pre Entreno  Lab Nutrition.png'),
-(14, '0003', 'BPI Sports - BEST EAA - Essential Amino Acids EAA', 'lb', 4, 11.00, '2025-11-14 22:47:37', 'public/img/productos/1763160457_BPI Sports - BEST EAA - Essential Amino Acids EAA.jpg'),
-(15, '0004', 'Muscle Tech Creatina Monohidrato Polvo Platino', 'lb', 7, 11.00, '2025-11-14 22:48:55', 'public/img/productos/1763160535_Muscle Tech Creatina Monohidrato Polvo Platino.jpg'),
-(16, '0005', 'Nike Team Breathe - Camiseta para hombre, L', 'L', 8, 5.00, '2025-11-15 01:13:41', 'public/img/productos/1763169221_Nike Team Breathe - Camiseta para hombre, L.jpg');
+(29, '0001', 'Pre Entreno Lab Nutrition', 'lb', 7, 8.00, '2025-11-15 05:40:42', 'public/img/productos/1763185242_Pre Entreno  Lab Nutrition.png'),
+(30, '0002', 'Whey protein Animal', 'lb', 6, 15.00, '2025-11-15 06:20:34', 'public/img/productos/1763187634_100-whey-protein-Animal.jpg');
 
 -- --------------------------------------------------------
 
@@ -180,19 +175,19 @@ ALTER TABLE `proveedor`
 -- AUTO_INCREMENT de la tabla `lotes`
 --
 ALTER TABLE `lotes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
