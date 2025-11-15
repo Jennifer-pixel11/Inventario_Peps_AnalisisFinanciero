@@ -14,8 +14,7 @@ public function index() {
     $productos = Producto::all();
     $totalProductos = count($productos);
 
-    // Productos en bajo stock
-    // (Si quieres cambiar el umbral, puedes pasar un número: lowStock(5), etc.)
+
     $bajoStock      = Producto::lowStock();
     $totalBajoStock = count($bajoStock);
 
@@ -42,11 +41,10 @@ public function index() {
     // Año actual
     $anio  = date('Y');
 
-    // Serie por mes: ventas y costos
-    // (Asegúrate que en Movimiento.php exista el método ventasYCostosPorMes($anio))
+   
     $serie = Movimiento::ventasYCostosPorMes($anio);
 
-    // Preparamos arrays para pasarlos al JS (Chart.js)
+   
     $labels = [];
     $ventas = [];
     $costos = [];
