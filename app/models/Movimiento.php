@@ -270,7 +270,45 @@ class Movimiento {
     return $stmt->fetchAll();
   }
 
-  
+ /* public static function estadoResultados($desde, $hasta) {
+    $pdo = Database::getInstance();
+
+    $desde_dt = $desde . ' 00:00:00';
+    $hasta_dt = $hasta . ' 23:59:59';
+
+    // Ventas netas (tomamos total_venta si existe, si no, asumimos total como venta)
+    $stmt = $pdo->prepare("
+        SELECT
+          SUM(
+            CASE 
+              WHEN tipo = 'SALIDA' THEN COALESCE(total_venta, total) 
+              ELSE 0 
+            END
+          ) AS ventas_netas,
+          SUM(
+            CASE 
+              WHEN tipo = 'SALIDA' THEN total 
+              ELSE 0 
+            END
+          ) AS costo_ventas
+        FROM movimientos
+        WHERE fecha BETWEEN ? AND ?
+    ");
+    $stmt->execute([$desde_dt, $hasta_dt]);
+    $row = $stmt->fetch();
+
+    $ventas_netas  = floatval($row['ventas_netas']  ?? 0);
+    $costo_ventas  = floatval($row['costo_ventas']  ?? 0);
+    $utilidad_bruta = $ventas_netas - $costo_ventas;
+
+    // Podrías agregar más niveles si quieres (gastos, etc.)
+    return [
+        'ventas_netas'   => $ventas_netas,
+        'costo_ventas'   => $costo_ventas,
+        'utilidad_bruta' => $utilidad_bruta,
+    ];
+}*/
+
   public static function valorizacionActual() {
     $pdo = Database::getInstance();
     $sql = "
@@ -345,4 +383,47 @@ public static function resumenFinanciero($desde, $hasta) {
     $stmt->execute();
     return $stmt->fetchAll();
   }
+
+  public static function ventasYCostosPorMes($anio) {
+    $pdo = Database::getInstance();
+
+    $stmt = $pdo->prepare("
+        SELECT
+          DATE_FORMAT(fecha, '%m') AS mes,
+          SUM(
+            CASE 
+              WHEN tipo = 'SALIDA' THEN COALESCE(total_venta, total) 
+              ELSE 0 
+            END
+          ) AS ventas,
+          SUM(
+            CASE 
+              WHEN tipo = 'SALIDA' THEN total 
+              ELSE 0 
+            END
+          ) AS costo_ventas
+        FROM movimientos
+        WHERE YEAR(fecha) = ?
+        GROUP BY DATE_FORMAT(fecha, '%m')
+        ORDER BY mes
+    ");
+    $stmt->execute([$anio]);
+    $rows = $stmt->fetchAll();
+
+    // Normalizamos a 12 meses (01 a 12)
+    $data = [];
+    for ($m = 1; $m <= 12; $m++) {
+        $key = str_pad($m, 2, '0', STR_PAD_LEFT);
+        $data[$key] = ['ventas' => 0, 'costo_ventas' => 0];
+    }
+
+    foreach ($rows as $r) {
+        $mes = $r['mes'];
+        $data[$mes]['ventas']       = floatval($r['ventas'] ?? 0);
+        $data[$mes]['costo_ventas'] = floatval($r['costo_ventas'] ?? 0);
+    }
+
+    return $data;
+}
+
 }

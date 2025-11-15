@@ -35,6 +35,7 @@
             <li><a class="dropdown-item" href="index.php?controller=reportes&action=valorizacion">VALORIZACIÓN ACTUAL</a></li>
             <li><a class="dropdown-item" href="index.php?controller=reportes&action=bajo_stock">BAJO STOCK</a></li>
           <li><a class="dropdown-item" href="index.php?controller=reportes&action=resumen_financiero">RESUMEN FINANCIERO</a></li>
+          
           </ul>
         </li>
       </ul>

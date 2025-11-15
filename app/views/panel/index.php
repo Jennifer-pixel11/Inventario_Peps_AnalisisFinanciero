@@ -167,3 +167,41 @@
     </div>
   </div>
 </div>
+<div class="row g-4 mt-4">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-dark text-white">
+        Resumen mensual: Ventas vs Costo de ventas (<?= htmlspecialchars($anio ?? date('Y')); ?>)
+
+      </div>
+      <div class="card-body">
+        <canvas id="chartVentasCostos" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('chartVentasCostos').getContext('2d');
+
+  const labels = <?= json_encode($labels ?? []); ?>;
+  const ventas = <?= json_encode($ventas ?? []); ?>;
+  const costos = <?= json_encode($costos ?? []); ?>;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Ventas', data: ventas, borderWidth: 1 },
+        { label: 'Costo de ventas', data: costos, borderWidth: 1 }
+      ]
+    },
+    options: {
+      responsive: true
+    }
+  });
+</script>
+
+
+

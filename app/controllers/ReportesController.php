@@ -151,4 +151,17 @@ class ReportesController extends Controller {
     $this->view('reportes/resumen_financiero', compact('desde', 'hasta', 'datos'));
   }
 
+    /* ==========================
+   *  ESTADO DE RESULTADOS
+   * ========================== */
+  /*public function estado_resultados() {
+    $hoy   = date(format: 'Y-m-d');
+    $desde = $_GET['desde'] ?? date(format: 'Y-m-01');
+    $hasta = $_GET['hasta'] ?? $hoy;
+
+    $er = Movimiento::estadoResultados($desde, $hasta);
+
+    $this->view('reportes/estado_resultados', compact('desde', 'hasta', 'er'));
+  }*/
+
 }
