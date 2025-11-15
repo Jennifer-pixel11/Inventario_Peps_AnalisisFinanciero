@@ -8,6 +8,6 @@ return [
     'charset' => 'utf8mb4'
   ],
   'app' => [
-    'base_url' => '/inventario_peps_web'
+    'base_url' => '/Inventario_Peps_AnalisisFinanciero'
   ]
 ];

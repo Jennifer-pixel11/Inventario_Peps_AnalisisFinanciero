@@ -23,7 +23,6 @@
             <td><?php echo htmlspecialchars($prov['email']); ?></td>
             <td class="text-end">
               <a class="btn btn-sm btn-outline-secondary" href="index.php?controller=proveedores&action=editar&id=<?php echo $prov['id']; ?>">Editar</a>
-              
               <a class="btn btn-sm btn-outline-danger" 
                  href="index.php?controller=proveedores&action=eliminar&id=<?php echo $prov['id']; ?>" 
                  onclick="return confirm('¿Eliminar proveedor? Esto no se puede deshacer.')">
