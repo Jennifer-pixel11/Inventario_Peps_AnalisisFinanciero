@@ -13,13 +13,16 @@ class ReportesController extends Controller {
     $productos = Producto::all();
     $data = [];
     $filtros = ['desde'=>'', 'hasta'=>'', 'producto_id'=>''];
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $filtros['desde'] = $_POST['desde'] ?? '';
-      $filtros['hasta'] = $_POST['hasta'] ?? '';
+      $filtros['desde']       = $_POST['desde']       ?? '';
+      $filtros['hasta']       = $_POST['hasta']       ?? '';
       $filtros['producto_id'] = $_POST['producto_id'] ?? '';
-      $pid = !empty($filtros['producto_id']) ? intval($filtros['producto_id']) : null;
+
+      $pid  = !empty($filtros['producto_id']) ? intval($filtros['producto_id']) : null;
       $data = Movimiento::movimientosPorRango($filtros['desde'], $filtros['hasta'], $pid);
     }
+
     $this->view('reportes/movimientos', compact('productos', 'data', 'filtros'));
   }
 
@@ -29,7 +32,7 @@ class ReportesController extends Controller {
   }
 
   public function bajo_stock() {
-    $min = isset($_GET['min']) ? intval($_GET['min']) : 5;
+    $min   = isset($_GET['min']) ? intval($_GET['min']) : 5;
     $items = Producto::lowStock($min);
     $this->view('reportes/bajo_stock', compact('items', 'min'));
   }
@@ -49,9 +52,10 @@ class ReportesController extends Controller {
 
   // Movimientos XLS
   public function movimientos_xls() {
-    $desde = $_POST['desde'] ?? '';
-    $hasta = $_POST['hasta'] ?? '';
+    $desde       = $_POST['desde']       ?? '';
+    $hasta       = $_POST['hasta']       ?? '';
     $producto_id = !empty($_POST['producto_id']) ? intval($_POST['producto_id']) : null;
+
     $data = Movimiento::movimientosPorRango($desde, $hasta, $producto_id);
 
     $rows = "";
@@ -112,8 +116,9 @@ class ReportesController extends Controller {
 
   // Bajo stock XLS
   public function bajo_stock_xls() {
-    $min = isset($_POST['min']) ? intval($_POST['min']) : 5;
+    $min   = isset($_POST['min']) ? intval($_POST['min']) : 5;
     $items = Producto::lowStock($min);
+
     $rows = "";
     foreach ($items as $p) {
       $rows .= "<tr>"
@@ -131,4 +136,19 @@ class ReportesController extends Controller {
       </table>";
     $this->sendXls("bajo_stock_{$min}.xls", $html);
   }
+
+  /* ==========================
+   *  RESUMEN FINANCIERO
+   * ========================== */
+  public function resumen_financiero() {
+    // Rango por defecto: mes actual
+    $hoy   = date('Y-m-d');
+    $desde = $_GET['desde'] ?? date('Y-m-01');
+    $hasta = $_GET['hasta'] ?? $hoy;
+
+    $datos = Movimiento::resumenFinanciero($desde, $hasta);
+
+    $this->view('reportes/resumen_financiero', compact('desde', 'hasta', 'datos'));
+  }
+
 }

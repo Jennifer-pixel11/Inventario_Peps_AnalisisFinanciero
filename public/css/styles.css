@@ -270,3 +270,25 @@ footer {
     background-color: #00351a !important;  /* verde oscuro */
     color: #00ff7f !important;             /* texto neon */
 }
+.total-negro {
+    color: #000 !important;
+    font-weight: 700 !important;
+}
+
+/* Forzar texto negro SOLO en la alerta de bajo stock */
+.alert-bajo-stock,
+.alert-bajo-stock * {
+    color: #000 !important;
+}
+
+/* Botón dentro de esa alerta */
+.btn-bajo-stock {
+    background-color: transparent;
+    border: 1px solid #000;
+    color: #000 !important;
+}
+
+.btn-bajo-stock:hover {
+    background-color: #000;
+    color: #fff !important;
+}

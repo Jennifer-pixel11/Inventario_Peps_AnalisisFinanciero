@@ -10,7 +10,7 @@ class PanelController extends Controller {
     $productos = Producto::all();
     $totalProductos = count($productos);
 
-    $bajoStock = Producto::lowStock(5); // umbral 5 unidades
+    $bajoStock = Producto::lowStock(10); // umbral 10 unidades
     $totalBajoStock = count($bajoStock);
 
     $stockTotal = 0;

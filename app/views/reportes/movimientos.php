@@ -41,27 +41,28 @@
     <table class="table table-hover align-middle">
       <thead class="table-light">
         <tr>
-          <th>Fecha</th><th>ID Prod.</th><th>Tipo</th><th>Cantidad</th><th>Costo unit.</th><th>Total</th><th>Lote</th><th>Nota</th>
+          <th>Fecha</th><th>ID Prod.</th><th>Tipo</th><th>Cantidad</th><th>Costo unit.</th><th>Total</th><th>Lote</th><th>Nota</th><th>Factura</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($data as $m): ?>
           <tr>
-            <td><?php echo htmlspecialchars($m['fecha']); ?></td>
-            <td><span class="badge text-bg-secondary"><?php echo $m['producto_id']; ?></span></td>
             <td>
-              <?php if ($m['tipo']==='ENTRADA'): ?>
-                <span class="badge text-bg-primary">ENTRADA</span>
-              <?php else: ?>
-                <span class="badge text-bg-warning">SALIDA</span>
-              <?php endif; ?>
-            </td>
-            <td><?php echo number_format($m['cantidad'],2); ?></td>
-            <td><?php echo number_format($m['costo_unitario'],4); ?></td>
-            <td><?php echo number_format($m['total'],4); ?></td>
-            <td><?php echo $m['lote_id'] ?? '-'; ?></td>
-            <td><?php echo htmlspecialchars($m['nota'] ?? ''); ?></td>
-          </tr>
+  <?php if (!empty($m['num_doc_compra'])): ?>
+    <a href="index.php?controller=movimientos&action=facturaCompra&num_doc_compra=<?= urlencode($m['num_doc_compra']); ?>"
+       class="btn btn-sm btn-outline-success">
+      Ver compra <?= htmlspecialchars($m['num_doc_compra']); ?>
+    </a>
+  <?php elseif (!empty($m['num_doc_venta'])): ?>
+    <a href="index.php?controller=movimientos&action=facturaVenta&num_doc_venta=<?= urlencode($m['num_doc_venta']); ?>"
+       class="btn btn-sm btn-outline-info">
+      Ver venta <?= htmlspecialchars($m['num_doc_venta']); ?>
+    </a>
+  <?php else: ?>
+    <span class="text-muted">—</span>
+  <?php endif; ?>
+</td>
+
         <?php endforeach; ?>
       </tbody>
     </table>

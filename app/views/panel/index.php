@@ -31,20 +31,23 @@
 
 
 
-
 <?php if (!empty($bajoStock)): ?>
 <div class="alert alert-warning d-flex align-items-center gap-2">
-  <span class="badge bg-danger rounded-pill"><?php echo $totalBajoStock; ?></span>
-  <div>
-    Hay productos en <strong>bajo stock</strong>. 
+  <span class="badge bg-danger rounded-pill" style="color:#fff !important;">
+    <?php echo $totalBajoStock; ?>
+  </span>
+  <div style="color:#000 !important; font-weight:600;">
+    Hay productos en <strong style="color:#000 !important;">bajo stock</strong>. 
     Revisa las compras para evitar quedarte sin suplementos o accesorios.
   </div>
-  <a class="btn btn-sm btn-outline-dark ms-auto"
+  <a class="btn btn-sm ms-auto"
+     style="border:1px solid #000 !important; color:#000 !important; background:#ffc107 !important;"
      href="index.php?controller=reportes&action=bajo_stock">
     Ver detalle
   </a>
 </div>
 <?php endif; ?>
+
 
 <div class="row g-3 mb-4">
   <div class="col-md-3">

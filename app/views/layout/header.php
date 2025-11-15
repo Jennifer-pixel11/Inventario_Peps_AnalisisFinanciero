@@ -14,25 +14,27 @@
 <nav class="navbar navbar-expand-lg navbar-dark brand-gradient border-0 mb-4 shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
-      <span class="brand-dot"></span>GYM SPORT CENTER (Inventario PEPS) 
+      <span class="brand-dot"></span>GYM SPORT CENTER (INVENTARIO PEPS) 
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="index.php?controller=productos&action=index">Productos</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=entrada">Entradas</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=salida">Salidas</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.php?controller=proveedores&action=index">Proveedores</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=kardex">Kardex</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.php?controller=productos&action=index">PRODUCTOS</a></li>
+<li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=entrada">COMPRAS</a></li>
+<li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=salida">VENTAS</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="index.php?controller=proveedores&action=index">PROVEEDORES</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.php?controller=movimientos&action=kardex">KARDEX</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Reportes</a>
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">REPORTES</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.php?controller=reportes&action=index">Panel</a></li>
-            <li><a class="dropdown-item" href="index.php?controller=reportes&action=movimientos">Movimientos por fecha</a></li>
-            <li><a class="dropdown-item" href="index.php?controller=reportes&action=valorizacion">Valorización actual</a></li>
-            <li><a class="dropdown-item" href="index.php?controller=reportes&action=bajo_stock">Bajo stock</a></li>
+            <li><a class="dropdown-item" href="index.php?controller=reportes&action=index">PANEL</a></li>
+            <li><a class="dropdown-item" href="index.php?controller=reportes&action=movimientos">MOVIMIENTOS POR FECHA</a></li>
+            <li><a class="dropdown-item" href="index.php?controller=reportes&action=valorizacion">VALORIZACIÓN ACTUAL</a></li>
+            <li><a class="dropdown-item" href="index.php?controller=reportes&action=bajo_stock">BAJO STOCK</a></li>
+          <li><a class="dropdown-item" href="index.php?controller=reportes&action=resumen_financiero">RESUMEN FINANCIERO</a></li>
           </ul>
         </li>
       </ul>

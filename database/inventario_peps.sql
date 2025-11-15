@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2025 a las 08:05:38
+-- Tiempo de generación: 15-11-2025 a las 02:47:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,11 +41,10 @@ CREATE TABLE `lotes` (
 --
 
 INSERT INTO `lotes` (`id`, `producto_id`, `fecha`, `costo_unitario`, `cantidad_inicial`, `cantidad_disponible`) VALUES
-(1, 1, '2025-10-29', 80.0000, 20.00, 20.00),
-(2, 2, '2025-10-29', 65.0000, 5.00, 0.00),
-(3, 3, '2025-10-30', 90.0000, 15.00, 8.00),
-(4, 2, '2025-10-29', 50.0000, 10.00, 10.00),
-(5, 4, '2025-10-29', 45.0000, 10.00, 10.00);
+(9, 12, '2025-11-14', 40.0000, 10.00, 9.00),
+(10, 13, '2025-11-14', 45.0000, 15.00, 15.00),
+(11, 14, '2025-11-14', 45.0000, 10.00, 10.00),
+(12, 15, '2025-11-14', 60.0000, 10.00, 10.00);
 
 -- --------------------------------------------------------
 
@@ -56,27 +55,32 @@ INSERT INTO `lotes` (`id`, `producto_id`, `fecha`, `costo_unitario`, `cantidad_i
 CREATE TABLE `movimientos` (
   `id` int(11) NOT NULL,
   `producto_id` int(11) NOT NULL,
+  `proveedor_id` int(10) UNSIGNED DEFAULT NULL,
+  `num_doc_compra` varchar(50) DEFAULT NULL,
   `tipo` enum('ENTRADA','SALIDA') NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `cantidad` decimal(12,2) NOT NULL,
   `costo_unitario` decimal(12,4) NOT NULL,
+  `precio_venta` decimal(12,4) DEFAULT NULL,
+  `total_venta` decimal(14,4) DEFAULT NULL,
   `total` decimal(14,4) NOT NULL,
   `lote_id` int(11) DEFAULT NULL,
-  `nota` varchar(255) DEFAULT NULL
+  `nota` varchar(255) DEFAULT NULL,
+  `cliente_nombre` varchar(150) DEFAULT NULL,
+  `cliente_nit` varchar(20) DEFAULT NULL,
+  `num_doc_venta` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `movimientos`
 --
 
-INSERT INTO `movimientos` (`id`, `producto_id`, `tipo`, `fecha`, `cantidad`, `costo_unitario`, `total`, `lote_id`, `nota`) VALUES
-(1, 1, 'ENTRADA', '2025-10-29 00:00:00', 20.00, 80.0000, 1600.0000, 1, ''),
-(2, 2, 'ENTRADA', '2025-10-29 00:00:00', 5.00, 65.0000, 325.0000, 2, ''),
-(3, 2, 'SALIDA', '2025-10-29 00:00:00', 5.00, 65.0000, 325.0000, 2, ''),
-(4, 3, 'ENTRADA', '2025-10-30 00:00:00', 15.00, 90.0000, 1350.0000, 3, ''),
-(5, 3, 'SALIDA', '2025-10-30 00:00:00', 7.00, 90.0000, 630.0000, 3, ''),
-(6, 2, 'ENTRADA', '2025-10-29 00:00:00', 10.00, 50.0000, 500.0000, 4, ''),
-(7, 4, 'ENTRADA', '2025-10-29 00:00:00', 10.00, 45.0000, 450.0000, 5, '');
+INSERT INTO `movimientos` (`id`, `producto_id`, `proveedor_id`, `num_doc_compra`, `tipo`, `fecha`, `cantidad`, `costo_unitario`, `precio_venta`, `total_venta`, `total`, `lote_id`, `nota`, `cliente_nombre`, `cliente_nit`, `num_doc_venta`) VALUES
+(18, 12, 6, 'FC-0001', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 40.0000, NULL, NULL, 400.0000, 9, 'Compra de Proteína Whey', NULL, NULL, NULL),
+(19, 13, 5, 'FC-0002', 'ENTRADA', '2025-11-14 00:00:00', 15.00, 45.0000, NULL, NULL, 675.0000, 10, 'Compra de Pre Entreno Lab Nutrition', NULL, NULL, NULL),
+(20, 14, 4, 'FC-0003', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 45.0000, NULL, NULL, 450.0000, 11, 'Compra de aminoácidos Nutrex ', NULL, NULL, NULL),
+(21, 15, 7, 'FC-0004', 'ENTRADA', '2025-11-14 00:00:00', 10.00, 60.0000, NULL, NULL, 600.0000, 12, 'Compra de Creatina Muscle Tech', NULL, NULL, NULL),
+(22, 12, NULL, NULL, 'SALIDA', '2025-11-14 00:00:00', 1.00, 40.0000, 80.0000, 80.0000, 40.0000, 9, 'Venta de Proteína Whey', 'Emely Alvarez', '1234-000001-123-4', 'FV-001');
 
 -- --------------------------------------------------------
 
@@ -100,10 +104,11 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `codigo`, `nombre`, `unidad`, `proveedor_id`, `stock`, `creado_en`, `imagen`) VALUES
-(1, '0001', 'Whey protein Animal', 'lb', NULL, 20.00, '2025-10-30 00:32:33', '/inventario_peps_web/public/uploads/img_6902b221b2acb4.84692897.jpg'),
-(2, '0002', 'dymatize chocolate gourmet 1 6 libras', 'lb', NULL, 10.00, '2025-10-30 00:35:59', '/inventario_peps_web/public/uploads/img_6902b2ef1160a5.17570513.jpg'),
-(3, '0003', 'Isopure Whey Isolate Protein Powder', 'lb', NULL, 8.00, '2025-10-30 01:28:25', '/inventario_peps_web/public/uploads/img_6902bf397c9792.37845204.jpg'),
-(4, '0004', 'Creatina', 'lb', NULL, 10.00, '2025-10-30 03:30:53', '/inventario_peps_web/public/uploads/img_6902dbed56b076.43210882.jpg');
+(12, '0001', 'Whey protein Animal', 'lb', 6, 9.00, '2025-11-14 22:46:14', 'public/img/productos/1763160374_100-whey-protein-Animal.jpg'),
+(13, '0002', 'Pre Entreno Lab Nutrition', 'lb', 5, 15.00, '2025-11-14 22:46:42', 'public/img/productos/1763160402_Pre Entreno  Lab Nutrition.png'),
+(14, '0003', 'BPI Sports - BEST EAA - Essential Amino Acids EAA', 'lb', 4, 11.00, '2025-11-14 22:47:37', 'public/img/productos/1763160457_BPI Sports - BEST EAA - Essential Amino Acids EAA.jpg'),
+(15, '0004', 'Muscle Tech Creatina Monohidrato Polvo Platino', 'lb', 7, 11.00, '2025-11-14 22:48:55', 'public/img/productos/1763160535_Muscle Tech Creatina Monohidrato Polvo Platino.jpg'),
+(16, '0005', 'Nike Team Breathe - Camiseta para hombre, L', 'L', 8, 5.00, '2025-11-15 01:13:41', 'public/img/productos/1763169221_Nike Team Breathe - Camiseta para hombre, L.jpg');
 
 -- --------------------------------------------------------
 
@@ -120,6 +125,17 @@ CREATE TABLE `proveedor` (
   `direccion` text DEFAULT NULL,
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`id`, `nombre_empresa`, `contacto_nombre`, `telefono`, `email`, `direccion`, `creado_en`) VALUES
+(4, 'Suplementos El Salvador', 'Suplementos El Salvador', '7852 2032', 'suplesal503@outlook.es', 'San Salvador, El Salvador', '2025-11-14 22:41:59'),
+(5, 'Suplementos Xtreme - El Salvador ', 'Suplementos Xtreme - El Salvador ', '7924 8255', 'suplementosxtremesv@gmail.com', 'San Salvador, El Salvador', '2025-11-14 22:44:10'),
+(6, 'Suplementos BodyFit El Salvador', 'Suplementos BodyFit El Salvador', '7883-4348', 'joe.argueta81@icloud.com', 'San Salvador, El Salvador', '2025-11-14 22:45:41'),
+(7, 'GNC ', 'GNC El Salvador', '2264-9450', 'soporte@gnc.com.sv', 'P.º Gral. Escalón, San Salvador', '2025-11-14 22:48:08'),
+(8, 'SportLine', 'SportLine', '2509-1700', 'atencion@sportline.com.sv', 'La Libertad, La Libertad, Antiguo Cuscatlán', '2025-11-15 01:12:22');
 
 --
 -- Índices para tablas volcadas
@@ -139,7 +155,8 @@ ALTER TABLE `movimientos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `lote_id` (`lote_id`),
   ADD KEY `idx_mov_prod_fecha` (`producto_id`,`fecha`),
-  ADD KEY `idx_mov_tipo_fecha` (`tipo`,`fecha`);
+  ADD KEY `idx_mov_tipo_fecha` (`tipo`,`fecha`),
+  ADD KEY `fk_mov_proveedor` (`proveedor_id`);
 
 --
 -- Indices de la tabla `productos`
@@ -163,25 +180,25 @@ ALTER TABLE `proveedor`
 -- AUTO_INCREMENT de la tabla `lotes`
 --
 ALTER TABLE `lotes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
@@ -197,6 +214,7 @@ ALTER TABLE `lotes`
 -- Filtros para la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
+  ADD CONSTRAINT `fk_mov_proveedor` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `movimientos_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `movimientos_ibfk_2` FOREIGN KEY (`lote_id`) REFERENCES `lotes` (`id`) ON DELETE SET NULL;
 

@@ -5,8 +5,19 @@ require_once __DIR__ . '/Lote.php';
 
 class Movimiento {
 
-
-  public static function registrarEntrada($producto_id, $fecha, $cantidad, $costo_unitario, $nota='') {
+  /* =====================================
+   *  ENTRADAS (COMPRAS)
+   * ===================================== */
+  // Nota: añadimos proveedor y num_doc_compra al final
+  public static function registrarEntrada(
+      $producto_id,
+      $fecha,
+      $cantidad,
+      $costo_unitario,
+      $nota = '',
+      $proveedor_id = null,
+      $num_doc_compra = null
+  ) {
     $pdo = Database::getInstance();
     $pdo->beginTransaction();
     try {
@@ -15,9 +26,16 @@ class Movimiento {
 
       $total = $cantidad * $costo_unitario;
 
+      // ahora insertamos también proveedor y num_doc_compra
       $stmt = $pdo->prepare("
-        INSERT INTO movimientos (producto_id, tipo, fecha, cantidad, costo_unitario, total, lote_id, nota)
-        VALUES (?,?,?,?,?,?,?,?)
+        INSERT INTO movimientos (
+          producto_id, tipo, fecha, cantidad, costo_unitario, total,
+          lote_id, nota,
+          proveedor_id, num_doc_compra,
+          cliente_nombre, cliente_nit,
+          num_doc_venta, precio_venta, total_venta
+        )
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ");
       $stmt->execute([
         $producto_id,
@@ -27,9 +45,17 @@ class Movimiento {
         $costo_unitario,
         $total,
         $lote_id,
-        $nota
+        $nota,
+        $proveedor_id,
+        $num_doc_compra,
+        null,   // cliente_nombre
+        null,   // cliente_nit
+        null,   // num_doc_venta
+        null,   // precio_venta
+        null    // total_venta
       ]);
 
+      // recalcular stock desde lotes
       Producto::actualizarStock($producto_id);
       $pdo->commit();
     } catch (Exception $e) {
@@ -38,13 +64,35 @@ class Movimiento {
     }
   }
 
-  // SALIDA: PEPS real, puede partir la salida en varios lotes
-  public static function registrarSalidaPEPS($producto_id, $fecha, $cantidad_salida, $nota='') {
+  /* =====================================
+   *  SALIDAS (VENTAS) - PEPS
+   * ===================================== */
+  // Nota: añadimos precio_venta y datos de cliente
+  public static function registrarSalidaPEPS(
+      $producto_id,
+      $fecha,
+      $cantidad_salida,
+      $nota = '',
+      $precio_venta = null,
+      $cliente_nombre = null,
+      $cliente_nit = null,
+      $num_doc_venta = null
+  ) {
     $pdo = Database::getInstance();
     $pdo->beginTransaction();
     try {
-      $restante = $cantidad_salida;
+      $restante          = $cantidad_salida;
       $costo_total_salida = 0.0;
+
+      // aseguramos que precio_venta sea float o null
+      $precio_venta = ($precio_venta !== null && $precio_venta !== '')
+                      ? floatval($precio_venta)
+                      : null;
+
+      // ingresos por venta (si se proporcionó precio)
+      $total_venta = ($precio_venta !== null)
+                     ? $precio_venta * $cantidad_salida
+                     : null;
 
       // lotes disponibles en orden FIFO
       $lotes = Lote::lotesDisponiblesFIFO($producto_id);
@@ -52,7 +100,7 @@ class Movimiento {
         if ($restante <= 0) break;
 
         $disponible = floatval($lote['cantidad_disponible']);
-        $toma = min($restante, $disponible);
+        $toma       = min($restante, $disponible);
         if ($toma <= 0) continue;
 
         // consumir del lote (controla que no quede negativo)
@@ -63,8 +111,14 @@ class Movimiento {
 
         // se registra UN movimiento por cada lote afectado
         $stmt = $pdo->prepare("
-          INSERT INTO movimientos (producto_id, tipo, fecha, cantidad, costo_unitario, total, lote_id, nota)
-          VALUES (?,?,?,?,?,?,?,?)
+          INSERT INTO movimientos (
+            producto_id, tipo, fecha, cantidad, costo_unitario, total,
+            lote_id, nota,
+            proveedor_id, num_doc_compra,
+            cliente_nombre, cliente_nit,
+            num_doc_venta, precio_venta, total_venta
+          )
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ");
         $stmt->execute([
           $producto_id,
@@ -72,9 +126,16 @@ class Movimiento {
           $fecha . ' 00:00:00',
           $toma,
           $lote['costo_unitario'],
-          $costo,
+          $costo,          // total (costo de venta)
           $lote['id'],
-          $nota
+          $nota,
+          null,            // proveedor_id (no aplica en ventas)
+          null,            // num_doc_compra
+          $cliente_nombre,
+          $cliente_nit,
+          $num_doc_venta,
+          $precio_venta,
+          $total_venta     // mismo total_venta en cada fila; se puede mejorar pero basta para proyecto
         ]);
 
         $restante -= $toma;
@@ -97,7 +158,9 @@ class Movimiento {
 
       return [
         'costo_unitario_promedio' => $costo_promedio_salida,
-        'costo_total'             => $costo_total_salida
+        'costo_total'             => $costo_total_salida,
+        'precio_venta'            => $precio_venta,
+        'total_venta'             => $total_venta
       ];
     } catch (Exception $e) {
       $pdo->rollBack();
@@ -108,18 +171,6 @@ class Movimiento {
   /* ===================
    *  KARDEX DETALLADO
    * =================== */
-
-  /**
-   * Devuelve filas de Kardex para el producto, con:
-   * - FECHA
-   * - CONCEPTO (nota o tipo)
-   * - ENTRADAS: unidades, costo, total
-   * - SALIDAS : unidades, costo, total
-   * - EXISTENCIAS: unidades, costo unitario promedio, total
-   *
-   * Esto permite dibujar la tarjeta como en el Excel:
-   * FECHA | CONCEPTO | ENTRADAS (U, COSTO, TOTAL) | SALIDAS (...) | EXISTENCIAS (...)
-   */
   public static function kardex($producto_id) {
     $pdo = Database::getInstance();
     $stmt = $pdo->prepare("
@@ -193,7 +244,6 @@ class Movimiento {
    *  REPORTES: MOVIMIENTOS Y VALORIZACIÓN
    * ======================================= */
 
-  // Movimientos por rango de fechas (para reportes)
   public static function movimientosPorRango($desde, $hasta, $producto_id = null) {
     $pdo = Database::getInstance();
     $desde_dt = $desde . ' 00:00:00';
@@ -220,7 +270,7 @@ class Movimiento {
     return $stmt->fetchAll();
   }
 
-  // Valorización actual del inventario (a partir de lotes PEPS)
+  
   public static function valorizacionActual() {
     $pdo = Database::getInstance();
     $sql = "
@@ -241,11 +291,45 @@ class Movimiento {
     return $pdo->query($sql)->fetchAll();
   }
 
-   /* ======================
-   *  ÚLTIMOS MOVIMIENTOS
-   * ====================== */
+public static function resumenFinanciero($desde, $hasta) {
+    $pdo = Database::getInstance();
 
-   /* ======================
+    $desde_dt = $desde . ' 00:00:00';
+    $hasta_dt = $hasta . ' 23:59:59';
+
+    $stmt = $pdo->prepare("
+        SELECT
+          SUM(CASE WHEN tipo = 'ENTRADA' THEN total              ELSE 0 END) AS total_compras,
+          SUM(CASE WHEN tipo = 'SALIDA'  THEN COALESCE(total_venta,0) ELSE 0 END) AS total_ventas,
+          SUM(CASE WHEN tipo = 'SALIDA'  THEN total              ELSE 0 END) AS costo_ventas
+        FROM movimientos
+        WHERE fecha BETWEEN ? AND ?
+    ");
+    $stmt->execute([$desde_dt, $hasta_dt]);
+    $row = $stmt->fetch();
+
+    $total_compras  = floatval($row['total_compras'] ?? 0);
+    $total_ventas   = floatval($row['total_ventas']  ?? 0);
+    $costo_ventas   = floatval($row['costo_ventas']  ?? 0);
+    $utilidad_bruta = $total_ventas - $costo_ventas;
+
+    $valorizacion = self::valorizacionActual();
+    $valor_inventario = 0;
+    foreach ($valorizacion as $v) {
+        $valor_inventario += floatval($v['valor_actual'] ?? 0);
+    }
+
+    return [
+        'total_compras'    => $total_compras,
+        'total_ventas'     => $total_ventas,
+        'costo_ventas'     => $costo_ventas,
+        'utilidad_bruta'   => $utilidad_bruta,
+        'valor_inventario' => $valor_inventario,
+    ];
+}
+
+
+  /* ======================
    *  ÚLTIMOS MOVIMIENTOS
    * ====================== */
   public static function ultimosMovimientos($limite = 10) {
@@ -261,7 +345,4 @@ class Movimiento {
     $stmt->execute();
     return $stmt->fetchAll();
   }
-
 }
-
-
